@@ -1,0 +1,44 @@
+# Configurações Globais
+spring:
+  application:
+    name: easy-invite
+  profiles:
+    active: dev # Perfil padrão
+
+---
+# Perfil: DESENVOLVIMENTO (DEV)
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://pc-2-vila:5433/easy_invite
+    username: user
+    password: secret
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
+
+---
+# Perfil: PRODUÇÃO (PROD)
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate

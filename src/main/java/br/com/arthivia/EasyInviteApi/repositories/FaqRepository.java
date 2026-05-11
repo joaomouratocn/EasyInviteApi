@@ -1,0 +1,11 @@
+package br.com.arthivia.EasyInviteApi.repositories;
+
+import br.com.arthivia.EasyInviteApi.models.entities.FaqEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface FaqRepository extends JpaRepository<FaqEntity, UUID> {
+}
