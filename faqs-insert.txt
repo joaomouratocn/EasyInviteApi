@@ -1,0 +1,32 @@
+[
+  {
+    "question": "O convite é pago mensalmente?",
+    "answer": "Não. Você paga apenas uma vez (R$ 20,00) e o convite fica disponível para compartilhar.",
+    "order": 1
+  },
+  {
+    "question": "O convite funciona no celular?",
+    "answer": "Sim. Todos os convites são otimizados para celular e ficam perfeitos no WhatsApp.",
+    "order": 2
+  },
+  {
+    "question": "Posso editar depois de criar?",
+    "answer": "Sim. Você pode editar as informações do convite antes de finalizar o pagamento. Após o pagamento, a edição pode depender do plano ou regras do sistema.",
+    "order": 3
+  },
+  {
+    "question": "O link do convite expira?",
+    "answer": "Não. O convite continua disponível no link para você compartilhar com seus convidados.",
+    "order": 4
+  },
+  {
+    "question": "Como funciona a confirmação de presença?",
+    "answer": "Os convidados podem confirmar presença diretamente pelo convite e você consegue visualizar a lista completa de confirmados.",
+    "order": 5
+  },
+  {
+    "question": "O pagamento é seguro?",
+    "answer": "Sim. O pagamento é processado por plataformas seguras e você recebe acesso imediato após a confirmação.",
+    "order": 6
+  }
+]

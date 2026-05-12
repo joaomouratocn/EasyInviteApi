@@ -1,3 +1,9 @@
+CREATE TABLE price(
+    id VARCHAR(50) PRIMARY KEY,
+    price DECIMAL(13,2) NOT NULL,
+    enable BOOLEAN NOT NUll,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 CREATE TABLE themes (
     id VARCHAR(50) PRIMARY KEY,
     theme_name VARCHAR(100) NOT NULL,
@@ -12,7 +18,6 @@ CREATE TABLE themes (
     dark_theme JSONB NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE TABLE invites (
      id SERIAL PRIMARY KEY,
      name VARCHAR(255) NOT NULL,
@@ -32,7 +37,6 @@ CREATE TABLE invites (
      theme_id VARCHAR(50) REFERENCES themes(id),
      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE TABLE faqs (
     id SERIAL PRIMARY KEY,
     question TEXT NOT NULL,
