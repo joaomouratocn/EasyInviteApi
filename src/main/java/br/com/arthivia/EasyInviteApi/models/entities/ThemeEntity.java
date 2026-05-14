@@ -39,7 +39,7 @@ public class ThemeEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "dark_theme", columnDefinition = "jsonb")
     private ColorSchema DarkTheme;
-    @Column(name = "create_at")
+    @Column(name = "create_at", updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
 }

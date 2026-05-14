@@ -11,6 +11,8 @@ spring:
   config:
     activate:
       on-profile: dev
+  app:
+    upload-dir: //PC-2-VILA/Documents/invites/images
   datasource:
     url: jdbc:postgresql://pc-2-vila:5433/easy_invite
     username: user
@@ -34,6 +36,8 @@ spring:
   config:
     activate:
       on-profile: prod
+  app:
+    upload-dir: ${IMAGE_FILES}
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
