@@ -11,8 +11,6 @@ spring:
   config:
     activate:
       on-profile: dev
-  app:
-    upload-dir: //PC-2-VILA/Documents/invites/images
   datasource:
     url: jdbc:postgresql://pc-2-vila:5433/easy_invite
     username: user
@@ -46,3 +44,8 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: validate
+
+---
+#Custom
+app:
+  upload-dir: "\\\\PC-2-VILA\\invites$\\images"
