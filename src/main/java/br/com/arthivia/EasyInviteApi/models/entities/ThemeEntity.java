@@ -9,6 +9,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,10 +19,12 @@ import java.time.LocalDateTime;
 public class ThemeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
     @Column(name = "theme_name")
     private String themeName;
     private String title;
+    @Column(name = "sub_title")
     private String subTitle;
     @Column(name = "modal_title")
     private String modalTitle;
@@ -39,7 +42,7 @@ public class ThemeEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "dark_theme", columnDefinition = "jsonb")
     private ColorSchema DarkTheme;
-    @Column(name = "create_at", updatable = false, insertable = false)
+    @Column(name = "created_at", updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
 }

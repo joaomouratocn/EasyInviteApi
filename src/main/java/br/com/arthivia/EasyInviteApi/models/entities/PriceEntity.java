@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -19,7 +20,8 @@ import java.time.LocalDateTime;
 public class PriceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
     private BigDecimal price;
     @Column(insertable = false, updatable = false)
     private boolean enable;

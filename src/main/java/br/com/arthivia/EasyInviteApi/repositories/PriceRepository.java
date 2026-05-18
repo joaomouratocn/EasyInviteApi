@@ -18,5 +18,5 @@ public interface PriceRepository extends JpaRepository<PriceEntity, UUID> {
     @Modifying
     @Transactional
     @Query("UPDATE PriceEntity p SET p.enable = false WHERE p.id = :id")
-    void disablePriceById(@Param("id") String id);
+    void disablePriceById(@Param("id") UUID id);
 }

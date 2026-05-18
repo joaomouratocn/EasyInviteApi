@@ -1,14 +1,14 @@
 CREATE TABLE price(
-    id VARCHAR(50) PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     price DECIMAL(13,2) NOT NULL,
     enable BOOLEAN NOT NUll DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE themes (
-    id VARCHAR(50) PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     theme_name VARCHAR(100) NOT NULL,
     title VARCHAR(255),
-    subtitle VARCHAR(255),
+    sub_title VARCHAR(255),
     modal_title VARCHAR(255),
     confirm_text TEXT,
     cover_url TEXT,
@@ -19,7 +19,7 @@ CREATE TABLE themes (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE invites (
-     id SERIAL PRIMARY KEY,
+     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
      name VARCHAR(255) NOT NULL,
      slug VARCHAR(50) UNIQUE NOT NULL,
      age INTEGER,
@@ -34,11 +34,11 @@ CREATE TABLE invites (
      dark_mode BOOLEAN DEFAULT TRUE,
      profile_url TEXT,
      status VARCHAR(10) CHECK (status IN ('WAP', 'ACT', 'EXP')),
-     theme_id VARCHAR(50) REFERENCES themes(id),
+     theme_id UUID REFERENCES themes(id),
      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE faqs (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     question TEXT NOT NULL,
     answer TEXT NOT NULL,
     display_order INTEGER DEFAULT 0

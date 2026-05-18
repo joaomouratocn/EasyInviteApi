@@ -4,8 +4,10 @@ import br.com.arthivia.EasyInviteApi.models.entities.FaqEntity;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.UUID;
+
 public record FaqsDto(
-        String id,
+        UUID id,
         @NotNull
         @NotEmpty
         String question,

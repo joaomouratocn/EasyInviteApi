@@ -3,9 +3,10 @@ package br.com.arthivia.EasyInviteApi.models.dtos;
 import br.com.arthivia.EasyInviteApi.models.entities.ThemeEntity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record ThemeDto(
-        String id, String themeName, String title, String subTitle, String modalTitle,
+        UUID id, String themeName, String title, String subTitle, String modalTitle,
         String confirmText, String getCoverUrl, String bgImageUrl, String getBgProfImageUrl, ColorSchema lightTheme,
         ColorSchema darkTheme, LocalDateTime createdAt
 ) {

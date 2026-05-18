@@ -8,6 +8,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Setter
@@ -16,8 +17,12 @@ import java.util.List;
 public class InviteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
     private String name;
+    private String address;
+    @Column(name = "event_date")
+    private LocalDateTime eventDate;
     @Column(updatable = false)
     private String slug;
     private Integer age;
@@ -39,7 +44,7 @@ public class InviteEntity {
     @Column(updatable = false)
     private String status;
     @Column(name = "theme_id")
-    private String themeId;
+    private UUID themeId;
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdDate;
 }
