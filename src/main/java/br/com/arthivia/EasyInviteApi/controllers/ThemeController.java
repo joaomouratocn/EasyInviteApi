@@ -25,9 +25,9 @@ public class ThemeController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/{themeid}")
-    public ResponseEntity<ThemeDto> getThemeById(@PathVariable @Valid UUID themeid){
-        var result = themeService.getThemeById(themeid);
+    @GetMapping("/{themeId}")
+    public ResponseEntity<ThemeDto> getThemeById(@PathVariable @Valid UUID themeId){
+        var result = themeService.getThemeById(themeId);
         return ResponseEntity.ok(result);
     }
 }

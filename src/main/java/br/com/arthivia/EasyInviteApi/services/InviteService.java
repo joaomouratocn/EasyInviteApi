@@ -12,7 +12,7 @@ public class InviteService {
     private final InviteRepository inviteRepository;
 
     public Long getInviteNumber(){
-        return (long) inviteRepository.findAll().size();
+        return inviteRepository.getInviteAmount();
     }
 
     public InviteDto getInvite(@Valid String slug) {
