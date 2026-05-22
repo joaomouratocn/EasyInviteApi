@@ -1,12 +1,12 @@
-# Configurações Globais
 spring:
   application:
     name: easy-invite
   profiles:
-    active: dev # Perfil padrão
+    active: dev
+  google:
+    client-id: 370415873876-ocdod6anb1833eb8q7n45dt49bj0d9pe.apps.googleusercontent.com
 
 ---
-# Perfil: DESENVOLVIMENTO (DEV)
 spring:
   config:
     activate:
@@ -23,19 +23,21 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  upload-dir: "\\\\PC-2-VILA\\invites$\\images"
 
 logging:
   level:
     org.hibernate.orm.jdbc.bind: trace
 
 ---
-# Perfil: PRODUÇÃO (PROD)
 spring:
   config:
     activate:
       on-profile: prod
-  app:
-    upload-dir: ${IMAGE_FILES}
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -44,8 +46,8 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: validate
-
----
-#Custom
-app:
-  upload-dir: "\\\\PC-2-VILA\\invites$\\images"
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  upload-dir: ${IMAGE_FOLDER}

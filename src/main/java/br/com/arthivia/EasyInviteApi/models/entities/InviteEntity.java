@@ -2,6 +2,7 @@ package br.com.arthivia.EasyInviteApi.models.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Table(name = "invites")
+@NoArgsConstructor
 public class InviteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -45,6 +47,35 @@ public class InviteEntity {
     private String status;
     @Column(name = "theme_id")
     private UUID themeId;
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdDate;
+
+    public InviteEntity(String name,
+                        Integer age,
+                        String eventDate,
+                        String address,
+                        String mapUrl,
+                        List<String> description,
+                        Boolean showAge,
+                        Boolean enableTimer,
+                        Boolean confirmEnable,
+                        Boolean darkMode,
+                        UUID themeId,
+                        String status,
+                        String profileUrl) {
+        this.name = name;
+        this.age = age;
+        this.eventDate = LocalDateTime.parse(eventDate);
+        this.slug = UUID.randomUUID().toString();
+        this.address = address;
+        this.mapUrl = mapUrl;
+        this.description = description;
+        this.showAge = showAge;
+        this.confirmEnable = confirmEnable;
+        this.enableTimer = enableTimer;
+        this.darkMode = darkMode;
+        this.profileUrl = profileUrl;
+        this.status = status;
+        this.themeId = themeId;
+    }
 }
