@@ -1,5 +1,6 @@
 package br.com.arthivia.EasyInviteApi.models.entities;
 
+import br.com.arthivia.EasyInviteApi.models.dtos.UserResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,12 +35,15 @@ public class UserEntity {
     @Column(name = "last_login_at", insertable = false, updatable = false)
     private LocalDateTime lastLoginAt;
 
-    // Construtor auxiliar para novos cadastros
     public UserEntity(String googleId, String email, String name, String pictureUrl) {
         this.googleId = googleId;
         this.email = email;
         this.name = name;
         this.createdAt = LocalDateTime.now();
         this.lastLoginAt = LocalDateTime.now();
+    }
+
+    public UserResponseDto toUserResponseDto() {
+        return new UserResponseDto(this.id, this.email, this.name);
     }
 }

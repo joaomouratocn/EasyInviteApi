@@ -6,6 +6,14 @@ spring:
   google:
     client-id: 370415873876-ocdod6anb1833eb8q7n45dt49bj0d9pe.apps.googleusercontent.com
 
+security:
+  jwt:
+    # Gera um secret forte em produção e configure via variáveis de ambiente
+    secret: "change_this_to_a_very_long_secure_random_secret_in_prod"
+    expiration-ms: 604800000 # 7 dias
+  cookie:
+    name: AUTH_TOKEN
+
 ---
 spring:
   config:
