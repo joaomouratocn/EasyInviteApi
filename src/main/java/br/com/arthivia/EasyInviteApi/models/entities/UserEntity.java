@@ -24,10 +24,13 @@ public class UserEntity {
 
     @Column(nullable = false, unique = true)
     private String email;
-
+    @Column(name = "google_id", unique = true)
     private String googleId;
 
     private String password;
+
+    @Column(name = "picture_url")
+    private String pictureUrl;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -44,6 +47,6 @@ public class UserEntity {
     }
 
     public UserResponseDto toUserResponseDto() {
-        return new UserResponseDto(this.id, this.email, this.name);
+        return new UserResponseDto(this.id, this.email, this.name, this.pictureUrl);
     }
 }

@@ -22,8 +22,8 @@ public class FaqsController {
     }
 
     @PostMapping("/insert/all")
-    public ResponseEntity<String> insertAllFaqs(@Valid @RequestBody List<FaqsDto> allfaqs){
-        var result = faqService.insertAllFaqs(allfaqs);
+    public ResponseEntity<String> insertAllFaqs(@Valid @RequestBody List<FaqsDto> allFaqs){
+        var result = faqService.insertAllFaqs(allFaqs);
         return ResponseEntity.ok(result);
     }
 }

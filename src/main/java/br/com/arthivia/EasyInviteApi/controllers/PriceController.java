@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class PriceController {
     private final PriceService priceService;
 
-    @GetMapping()
+    @GetMapping("/current")
     public ResponseEntity<PriceDto> getPrice() {
         var result = priceService.getPrice();
         return ResponseEntity.ok(result);

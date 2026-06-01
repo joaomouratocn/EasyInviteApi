@@ -1,7 +1,6 @@
-package br.com.arthivia.EasyInviteApi.security;
+package br.com.arthivia.EasyInviteApi.config.security;
 
 import br.com.arthivia.EasyInviteApi.models.dtos.UserResponseDto;
-import br.com.arthivia.EasyInviteApi.models.entities.UserEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +16,7 @@ public class JwtUtil {
     private final long expirationMs;
 
     public JwtUtil(@Value("${security.jwt.secret}") String secret,
-                   @Value("${security.jwt.expiration-ms:604800000}") long expirationMs) {
+                   @Value("${security.jwt.expiration-ms}") long expirationMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMs = expirationMs;
     }

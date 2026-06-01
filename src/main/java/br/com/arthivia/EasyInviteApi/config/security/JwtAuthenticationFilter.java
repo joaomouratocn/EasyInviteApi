@@ -1,4 +1,4 @@
-package br.com.arthivia.EasyInviteApi.security;
+package br.com.arthivia.EasyInviteApi.config.security;
 
 import br.com.arthivia.EasyInviteApi.models.entities.UserEntity;
 import br.com.arthivia.EasyInviteApi.repositories.UserRepository;

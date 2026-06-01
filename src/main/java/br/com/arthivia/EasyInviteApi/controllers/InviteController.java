@@ -3,6 +3,7 @@ package br.com.arthivia.EasyInviteApi.controllers;
 import br.com.arthivia.EasyInviteApi.models.dtos.InviteDto;
 import br.com.arthivia.EasyInviteApi.services.InviteService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,12 @@ public class InviteController {
                 confirmEnable,
                 darkMode,
                 themeId, profileFile);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<InviteDto>> getInviteByUser(@PathVariable @Valid UUID userId) {
+        var result = inviteService.getInviteByUser(userId);
         return ResponseEntity.ok(result);
     }
 

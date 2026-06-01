@@ -3,8 +3,9 @@ CREATE TABLE users
     id   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
-    googleId VARCHAR(50) UNIQUE,
+    google_id VARCHAR(50) UNIQUE,
     password VARCHAR(100),
+    picture_url TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -47,6 +48,7 @@ CREATE TABLE invites
     enable_timer    BOOLEAN          DEFAULT TRUE,
     dark_mode       BOOLEAN          DEFAULT TRUE,
     profile_url     TEXT,
+    user_id         UUID NOT NULL REFERENCES users (id),
     status          VARCHAR(10) CHECK (status IN ('WAP', 'ACT', 'EXP')),
     theme_id        UUID REFERENCES themes (id),
     created_at      TIMESTAMP        DEFAULT CURRENT_TIMESTAMP

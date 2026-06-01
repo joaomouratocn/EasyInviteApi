@@ -4,6 +4,7 @@ import br.com.arthivia.EasyInviteApi.models.dtos.InviteDto;
 import br.com.arthivia.EasyInviteApi.models.entities.InviteEntity;
 import br.com.arthivia.EasyInviteApi.repositories.InviteRepository;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +33,11 @@ public class InviteService {
             }
             default -> throw new RuntimeException("Invite without status");
         }
+    }
+
+    public List<InviteDto> getInviteByUser(@Valid @NotBlank UUID userId) {
+        var invites = inviteRepository.findByUserId(userId);
+        return invites.stream().flatMap(List::stream).map(InviteDto::new).toList();
     }
 
     public UUID saveInvite(String name,

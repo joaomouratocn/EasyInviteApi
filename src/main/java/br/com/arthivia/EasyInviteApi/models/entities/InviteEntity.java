@@ -43,6 +43,8 @@ public class InviteEntity {
     private boolean darkMode;
     @Column(name = "profile_url")
     private String profileUrl;
+    @Column(name = "user_id")
+    private UUID userId;
     @Column(updatable = false)
     private String status;
     @Column(name = "theme_id")
