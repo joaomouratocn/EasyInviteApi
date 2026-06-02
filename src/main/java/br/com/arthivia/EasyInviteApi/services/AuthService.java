@@ -34,7 +34,6 @@ public class AuthService {
         }
         UserEntity user = userOpt.get();
 
-        // Se usuário foi criado via Google e não tem senha definida
         if (user.getPassword() == null || user.getPassword().isBlank()) {
             throw new IllegalArgumentException("Conta criada via Google. Faça login com Google ou ative uma senha.");
         }
@@ -50,27 +49,29 @@ public class AuthService {
     }
 
     public UserEntity registerLocal(RegisterRequestDto dto) {
-        // Verifica se email já existe
-        if (userRepository.findByEmail(dto.email()).isPresent()) {
-            throw new IllegalArgumentException("Já existe uma conta com esse e-mail.");
-        }
-
         String hashed = passwordEncoder.encode(dto.password());
+        Optional<UserEntity> existingUser = userRepository.findByEmail(dto.email());
 
-        UserEntity newUser = new UserEntity();
-        newUser.setEmail(dto.email());
-        newUser.setName(dto.name());
-        newUser.setPassword(hashed);
-        newUser.setCreatedAt(LocalDateTime.now());
-        newUser.setLastLoginAt(LocalDateTime.now());
-        // googleId null para conta local
-
-        UserEntity saved = userRepository.save(newUser);
-        return saved;
+        if (existingUser.isPresent()) {
+            UserEntity userEntity = existingUser.get();
+            userEntity.setPassword(hashed);
+            userEntity.setSendNotifications(dto.sendNewsletter());
+            userEntity.setLastLoginAt(LocalDateTime.now());
+            userRepository.updateUser(userEntity);
+            return userEntity;
+        } else {
+            UserEntity newUser = new UserEntity();
+            newUser.setEmail(dto.email());
+            newUser.setName(dto.name());
+            newUser.setPassword(hashed);
+            newUser.setSendNotifications(dto.sendNewsletter());
+            newUser.setCreatedAt(LocalDateTime.now());
+            newUser.setLastLoginAt(LocalDateTime.now());
+            return userRepository.save(newUser);
+        }
     }
 
     public UserEntity authOrRegisterGoogle(String idTokenString) {
-        // 1. Validação prévia para evitar requisições desnecessárias ao Google
         if (idTokenString == null || idTokenString.trim().isEmpty()) {
             throw new IllegalArgumentException("O token enviado está vazio ou nulo.");
         }
@@ -88,23 +89,26 @@ public class AuthService {
                 String googleUserId = payload.getSubject();
                 String email = payload.getEmail();
                 String name = (String) payload.get("name");
+                String pictureUrl = (String) payload.get("picture");
 
-                return userRepository.findByGoogleId(googleUserId).map(userEntity -> {
+                return userRepository.findByEmail(email).map(userEntity -> {
                     userEntity.setName(name);
+                    userEntity.setEmail(email);
+                    userEntity.setGoogleId(googleUserId);
+                    userEntity.setPictureUrl(pictureUrl);
                     userEntity.setLastLoginAt(java.time.LocalDateTime.now());
-                    return userRepository.save(userEntity);
+                    userRepository.updateUser(userEntity);
+                    return userEntity;
                 }).orElseGet(() -> {
-                    UserEntity newUser = new UserEntity(googleUserId, email, name, null);
+                    UserEntity newUser = new UserEntity(googleUserId, email, name, pictureUrl);
                     return userRepository.save(newUser);
                 });
 
             } else {
-                // Se o token for inválido/expirou, o verifier retorna null
                 throw new IllegalArgumentException("Token do Google inválido, expirou ou o Client ID está incorreto.");
             }
 
         } catch (GeneralSecurityException | IOException e) {
-            // IMPORTANTE: Passamos o 'e' no construtor para herdar o StackTrace real (Causa Raiz)
             throw new RuntimeException("Erro interno ao validar autenticação com o Google: " + e.getMessage(), e);
         }
     }

@@ -31,7 +31,8 @@ public class SecurityConfig {
                                 "/api/invites/{slug}",
                                 "/api/auth/google",
                                 "/api/auth/register",
-                                "/api/auth/login"
+                                "/api/auth/login",
+                                "/api/auth/logged"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

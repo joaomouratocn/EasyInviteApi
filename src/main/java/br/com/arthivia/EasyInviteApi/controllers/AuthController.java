@@ -5,16 +5,17 @@ import br.com.arthivia.EasyInviteApi.models.dtos.CredentialRequestDto;
 import br.com.arthivia.EasyInviteApi.models.dtos.LoginRequestDto;
 import br.com.arthivia.EasyInviteApi.models.dtos.RegisterRequestDto;
 import br.com.arthivia.EasyInviteApi.models.dtos.UserResponseDto;
+import br.com.arthivia.EasyInviteApi.models.entities.UserEntity;
 import br.com.arthivia.EasyInviteApi.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -78,6 +79,30 @@ public class AuthController {
         return ResponseEntity.noContent()
                 .header(HttpHeaders.SET_COOKIE, cookieHeader)
                 .build();
+    }
+
+    @GetMapping("/logged")
+    public ResponseEntity<Map<String, Object>> getCurrentUser() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            response.put("authenticated", false);
+            response.put("user", null);
+            return ResponseEntity.ok(response);
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserEntity user) {
+            response.put("authenticated", true);
+            response.put("user", user.toUserResponseDto());
+        } else {
+            response.put("authenticated", false);
+            response.put("user", null);
+        }
+
+        return ResponseEntity.ok(response);
     }
 
     private String buildSetCookieHeader(String token, long maxAgeSeconds) {

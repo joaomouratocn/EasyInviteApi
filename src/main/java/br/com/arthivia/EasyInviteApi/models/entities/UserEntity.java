@@ -50,17 +50,20 @@ public class UserEntity implements UserDetails {
     @Column(name = "last_login_at", insertable = false, updatable = false)
     private LocalDateTime lastLoginAt;
 
+    @Column(name = "send_notifications", nullable = false)
+    private boolean sendNotifications = false;
+
     //Campos obrigatórios do UserDetails
-    @Column(nullable = false)
+    @Column(name = "account_non_expired", nullable = false)
     private boolean accountNonExpired = true;
 
-    @Column(nullable = false)
+    @Column(name = "account_non_locked", nullable = false)
     private boolean accountNonLocked = true;
 
-    @Column(nullable = false)
+    @Column(name = "credentials_non_expired", nullable = false)
     private boolean credentialsNonExpired = true;
 
-    @Column(nullable = false)
+    @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
     public UserEntity(String googleId, String email, String name, String pictureUrl) {
@@ -76,7 +79,6 @@ public class UserEntity implements UserDetails {
         return new UserResponseDto(this.id, this.email, this.name, this.pictureUrl);
     }
 
-    // ✅ Implementação do UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));

@@ -18,6 +18,7 @@ import java.util.UUID;
 public class InviteService {
     private final ImageService imageService;
     private final InviteRepository inviteRepository;
+    private final ThemeService themeService;
 
     public Long getInviteNumber() {
         return inviteRepository.getInviteAmount();
@@ -29,7 +30,8 @@ public class InviteService {
             case "EXP" -> throw new RuntimeException("Invite wait expired");
             case "WAP" -> throw new RuntimeException("Invite wait approval");
             case "ACT" -> {
-                return new InviteDto(invite);
+                var theme = themeService.getThemeById(invite.getThemeId());
+                return new InviteDto(invite, theme);
             }
             default -> throw new RuntimeException("Invite without status");
         }
@@ -37,7 +39,10 @@ public class InviteService {
 
     public List<InviteDto> getInviteByUser(@Valid @NotBlank UUID userId) {
         var invites = inviteRepository.findByUserId(userId);
-        return invites.stream().flatMap(List::stream).map(InviteDto::new).toList();
+        return invites.stream().flatMap(List::stream).map(inviteEntity -> {
+            var theme = themeService.getThemeById(inviteEntity.getThemeId());
+            return new InviteDto(inviteEntity, theme);
+        }).toList();
     }
 
     public UUID saveInvite(String name,

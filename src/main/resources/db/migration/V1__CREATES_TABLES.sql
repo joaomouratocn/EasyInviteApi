@@ -7,6 +7,11 @@ CREATE TABLE users
     password VARCHAR(100),
     picture_url TEXT,
     role VARCHAR(10) NOT NULL,
+    send_notifications BOOLEAN DEFAULT false,
+    account_non_expired BOOLEAN DEFAULT TRUE,
+    account_non_locked BOOLEAN DEFAULT TRUE,
+    credentials_non_expired BOOLEAN DEFAULT TRUE,
+    enabled BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

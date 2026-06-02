@@ -21,10 +21,10 @@ public record InviteDto(
         boolean darkMode,
         String profileUrl,
         String status,
-        UUID themeId,
+        ThemeDto theme,
         LocalDateTime createdDate
 ) {
-    public InviteDto(InviteEntity inviteEntity) {
+    public InviteDto(InviteEntity inviteEntity, ThemeDto theme) {
         this(inviteEntity.getId(),
                 inviteEntity.getName(),
                 inviteEntity.getSlug(),
@@ -39,7 +39,7 @@ public record InviteDto(
                 inviteEntity.isDarkMode(),
                 inviteEntity.getProfileUrl(),
                 inviteEntity.getStatus(),
-                inviteEntity.getThemeId(),
+                theme,
                 inviteEntity.getCreatedDate());
     }
 }
