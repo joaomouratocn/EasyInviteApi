@@ -23,13 +23,15 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",
                                 "/api/images/**",
                                 "/api/themes/**",
                                 "/api/faqs/getall",
                                 "/api/price/current",
                                 "/api/invites/count",
-                                "/api/invites/{slug}"
+                                "/api/invites/{slug}",
+                                "/api/auth/google",
+                                "/api/auth/register",
+                                "/api/auth/login"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

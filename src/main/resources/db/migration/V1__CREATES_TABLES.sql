@@ -6,6 +6,7 @@ CREATE TABLE users
     google_id VARCHAR(50) UNIQUE,
     password VARCHAR(100),
     picture_url TEXT,
+    role VARCHAR(10) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

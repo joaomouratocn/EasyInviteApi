@@ -1,7 +1,6 @@
 package br.com.arthivia.EasyInviteApi.services;
 
 import br.com.arthivia.EasyInviteApi.models.dtos.RegisterRequestDto;
-import br.com.arthivia.EasyInviteApi.models.dtos.UserResponseDto;
 import br.com.arthivia.EasyInviteApi.models.entities.UserEntity;
 import br.com.arthivia.EasyInviteApi.repositories.UserRepository;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -28,7 +27,7 @@ public class AuthService {
     @Value("${spring.google.client-id}")
     private String googleClientId;
 
-    public UserResponseDto loginWithCredentials(String email, String rawPassword) {
+    public UserEntity loginWithCredentials(String email, String rawPassword) {
         Optional<UserEntity> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
             throw new IllegalArgumentException("Credenciais inválidas.");
@@ -47,10 +46,10 @@ public class AuthService {
         user.setLastLoginAt(LocalDateTime.now());
         userRepository.save(user);
 
-        return user.toUserResponseDto();
+        return user;
     }
 
-    public UserResponseDto registerLocal(RegisterRequestDto dto) {
+    public UserEntity registerLocal(RegisterRequestDto dto) {
         // Verifica se email já existe
         if (userRepository.findByEmail(dto.email()).isPresent()) {
             throw new IllegalArgumentException("Já existe uma conta com esse e-mail.");
@@ -67,10 +66,10 @@ public class AuthService {
         // googleId null para conta local
 
         UserEntity saved = userRepository.save(newUser);
-        return saved.toUserResponseDto();
+        return saved;
     }
 
-    public UserResponseDto authOrRegisterGoogle(String idTokenString) {
+    public UserEntity authOrRegisterGoogle(String idTokenString) {
         // 1. Validação prévia para evitar requisições desnecessárias ao Google
         if (idTokenString == null || idTokenString.trim().isEmpty()) {
             throw new IllegalArgumentException("O token enviado está vazio ou nulo.");
@@ -97,7 +96,7 @@ public class AuthService {
                 }).orElseGet(() -> {
                     UserEntity newUser = new UserEntity(googleUserId, email, name, null);
                     return userRepository.save(newUser);
-                }).toUserResponseDto();
+                });
 
             } else {
                 // Se o token for inválido/expirou, o verifier retorna null

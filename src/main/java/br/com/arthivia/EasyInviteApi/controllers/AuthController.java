@@ -6,11 +6,9 @@ import br.com.arthivia.EasyInviteApi.models.dtos.LoginRequestDto;
 import br.com.arthivia.EasyInviteApi.models.dtos.RegisterRequestDto;
 import br.com.arthivia.EasyInviteApi.models.dtos.UserResponseDto;
 import br.com.arthivia.EasyInviteApi.services.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,58 +34,60 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<UserResponseDto> login(@Valid @RequestBody LoginRequestDto request) {
-        UserResponseDto user = authService.loginWithCredentials(request.email(), request.password());
+        var user = authService.loginWithCredentials(request.email(), request.password());
         String jwt = jwtUtil.generateToken(user);
 
-        ResponseCookie cookie = buildAuthCookie(jwt, jwtExpirationMs / 1000);
+        String cookieHeader = buildSetCookieHeader(jwt, jwtExpirationMs / 1000);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(user);
+                .header(HttpHeaders.SET_COOKIE, cookieHeader)
+                .body(user.toUserResponseDto());
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> register(@Valid @RequestBody RegisterRequestDto request) {
-        UserResponseDto user = authService.registerLocal(request);
+        var user = authService.registerLocal(request);
         String jwt = jwtUtil.generateToken(user);
 
-        ResponseCookie cookie = buildAuthCookie(jwt, jwtExpirationMs / 1000);
+        String cookieHeader = buildSetCookieHeader(jwt, jwtExpirationMs / 1000);
 
         return ResponseEntity.status(201)
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(user);
+                .header(HttpHeaders.SET_COOKIE, cookieHeader)
+                .body(user.toUserResponseDto());
     }
 
     @PostMapping("/google")
     public ResponseEntity<UserResponseDto> authWithGoogle(@Valid @RequestBody CredentialRequestDto request) {
-        UserResponseDto user = authService.authOrRegisterGoogle(request.credential());
+        var user = authService.authOrRegisterGoogle(request.credential());
         String jwt = jwtUtil.generateToken(user);
 
-        ResponseCookie cookie = buildAuthCookie(jwt, jwtExpirationMs / 1000);
+        String cookieHeader = buildSetCookieHeader(jwt, jwtExpirationMs / 1000);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(user);
+                .header(HttpHeaders.SET_COOKIE, cookieHeader)
+                .body(user.toUserResponseDto());
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletRequest request) {
+    public ResponseEntity<Void> logout() {
         SecurityContextHolder.clearContext();
 
-        ResponseCookie cookie = buildAuthCookie("", 0);
+        // Cookie com maxAge=0 para deletar
+        String cookieHeader = buildSetCookieHeader("", 0);
 
         return ResponseEntity.noContent()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, cookieHeader)
                 .build();
     }
 
-    private ResponseCookie buildAuthCookie(String value, long maxAgeSeconds) {
-        return ResponseCookie.from(cookieName, value)
-                .httpOnly(true)
-                .secure(cookieSecure)
-                .path("/")
-                .maxAge(maxAgeSeconds)
-                .sameSite("Lax")
-                .build();
+    private String buildSetCookieHeader(String token, long maxAgeSeconds) {
+        String secureFlag = cookieSecure ? "; Secure" : "";
+        return String.format(
+                "%s=%s; Max-Age=%d; Path=/; HttpOnly%s; SameSite=Lax",
+                cookieName,
+                token,
+                maxAgeSeconds,
+                secureFlag
+        );
     }
 }
