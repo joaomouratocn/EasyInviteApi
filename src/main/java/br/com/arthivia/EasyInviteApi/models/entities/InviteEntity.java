@@ -63,6 +63,7 @@ public class InviteEntity {
                         Boolean confirmEnable,
                         Boolean darkMode,
                         UUID themeId,
+                        UUID userId,
                         String status,
                         String profileUrl) {
         this.name = name;
@@ -78,6 +79,7 @@ public class InviteEntity {
         this.darkMode = darkMode;
         this.profileUrl = profileUrl;
         this.status = status;
+        this.userId = userId;
         this.themeId = themeId;
     }
 }

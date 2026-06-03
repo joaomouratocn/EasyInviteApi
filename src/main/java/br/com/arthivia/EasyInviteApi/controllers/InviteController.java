@@ -3,7 +3,6 @@ package br.com.arthivia.EasyInviteApi.controllers;
 import br.com.arthivia.EasyInviteApi.models.dtos.InviteDto;
 import br.com.arthivia.EasyInviteApi.services.InviteService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +19,22 @@ public class InviteController {
     private final InviteService inviteService;
 
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<UUID> save(
-            @RequestParam String name,
-            @RequestParam Integer age,
-            @RequestParam String eventDate,
-            @RequestParam String address,
-            @RequestParam(required = false) String mapUrl,
-            @RequestParam List<String> description,
-            @RequestParam Boolean showAge,
-            @RequestParam Boolean enableTimer,
-            @RequestParam Boolean confirmEnable,
-            @RequestParam Boolean darkMode,
-            @RequestParam UUID themeId,
-            @RequestPart(required = false) MultipartFile profileFile) {
+    public ResponseEntity<UUID> saveInvite(
+            @RequestParam("name") String name,
+            @RequestParam("age") Integer age,
+            @RequestParam("eventDate") String eventDate,
+            @RequestParam("address") String address,
+            @RequestParam("mapUrl") String mapUrl,
+            @RequestParam("description") List<String> description,
+            @RequestParam("showAge") Boolean showAge,
+            @RequestParam("enableTimer") Boolean enableTimer,
+            @RequestParam("confirmEnable") Boolean confirmEnable,
+            @RequestParam("darkMode") Boolean darkMode,
+            @RequestParam("themeId") UUID themeId,
+            @RequestParam("userId") UUID userId,
+            @RequestPart("profileFile") MultipartFile profileFile) {
 
-        var result = inviteService.saveInvite(name,
+        UUID id = inviteService.saveInvite(name,
                 age,
                 eventDate,
                 address,
@@ -44,8 +44,10 @@ public class InviteController {
                 enableTimer,
                 confirmEnable,
                 darkMode,
-                themeId, profileFile);
-        return ResponseEntity.ok(result);
+                themeId,
+                userId,
+                profileFile);
+        return ResponseEntity.ok(id);
     }
 
     @GetMapping("/user/{userId}")
@@ -57,6 +59,12 @@ public class InviteController {
     @GetMapping("/count")
     public ResponseEntity<Long> getInviteNumber() {
         var result = inviteService.getInviteNumber();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/id/{uuid}")
+    public ResponseEntity<InviteDto> getInviteById(@PathVariable @Valid UUID uuid) {
+        var result = inviteService.getInviteById(uuid);
         return ResponseEntity.ok(result);
     }
 
